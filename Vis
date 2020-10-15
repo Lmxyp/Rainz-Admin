@@ -1,0 +1,107 @@
+local vol = "6000" --how big do you want it?
+local UserName  = game:GetService('Players').LocalPlayer.Name
+local Autoride = true
+local D = {}
+local Variables = {
+	workspace = game:GetService("Workspace"),
+	players = game:GetService("Players")
+	}
+local MainUserP, MainUserW = Variables.players.LocalPlayer, Variables.workspace:FindFirstChild(UserName)
+
+function BreakAnimation()
+	for _, x in next, MainUserP.Character.Humanoid:GetPlayingAnimationTracks() do
+		if not string.find(x.Animation.AnimationId, "180426354") then
+			x:stop()
+		end
+	end
+	wait()
+	local DualAnimation = Instance.new("Animation")
+	DualAnimation.AnimationId = "rbxassetid://1145142527"
+	local DualAnimation_ = MainUserP.Character.Humanoid:LoadAnimation(DualAnimation)
+	DualAnimation_:Play()
+	DualAnimation_:AdjustSpeed(1)
+end
+
+function HideCloud()
+	MainUserW.PompousTheCloud.ServerControl:InvokeServer("SetProperty",{["Value"]="rbxassetid://0",["Property"]="MeshId",["Object"]=MainUserW.PompousTheCloud.Handle.Mesh})
+end
+
+local VerifyCloud = function()
+	if not MainUserP.Character:FindFirstChild("PompousTheCloud") and not MainUserP.Backpack:FindFirstChild("PompousTheCloud") then
+		wait(0.5)
+		MainUserP.Backpack:FindFirstChild("PompousTheCloud").Parent = MainUserP.Character
+		HideCloud()
+		wait()
+		BreakAnimation()
+		wait(0.5)
+		if Autoride == true then
+			Variables.workspace[UserName].PompousTheCloud.ServerControl:InvokeServer("Fly", {["Flying"] = true})
+			MainUserW.PompousTheCloud.ServerControl:InvokeServer("SetProperty",{["Value"]="rbxassetid://0",["Property"]="MeshId",["Object"]=MainUserW.PompousTheCloud.EffectCloud.Mesh})
+		end
+	elseif not MainUserP.Character:FindFirstChild("PompousTheCloud") and MainUserP.Backpack:FindFirstChild("PompousTheCloud") then
+		MainUserP.Backpack:FindFirstChild("PompousTheCloud").Parent = MainUserP.Character
+		HideCloud()
+		wait()
+		BreakAnimation()
+		wait(0.5)
+		if Autoride == true then
+			Variables.workspace[UserName].PompousTheCloud.ServerControl:InvokeServer("Fly", {["Flying"] = true})
+		end
+	elseif MainUserP.Character:FindFirstChild("PompousTheCloud") then
+		HideCloud()
+		wait()
+		BreakAnimation()
+		if Autoride == true then
+			Variables.workspace[UserName].PompousTheCloud.ServerControl:InvokeServer("Fly", {["Flying"] = false})
+		end
+	end
+end
+
+function D:FireEvent(ItemName, Object, Property, Value)
+	MainUserW:FindFirstChild(ItemName)["ServerControl"]:InvokeServer("SetProperty",{["Value"]=Value,["Property"]=Property,["Object"]=Object})
+end
+
+VerifyCloud()
+D:FireEvent("PompousTheCloud",MainUserW["PompousTheCloud"]["LocalScript"],"Disabled",true)
+D:FireEvent("PompousTheCloud",MainUserW["SuperFlyGoldBoombox"]["Handle"],"Transparency","0")
+	game.ReplicatedStorage.AvatarEditor.HatHandle:FireServer("14129625")
+	wait(1)
+	D:FireEvent("PompousTheCloud",MainUserW["14129625"]["Handle"]["Mesh"],"MeshId","rbxassetid://2177672456") --mesh id
+	D:FireEvent("PompousTheCloud",MainUserW["14129625"]["Handle"]["Mesh"],"TextureId","rbxassetid://2177672479") --textureid (decal)
+	D:FireEvent("PompousTheCloud",MainUserW["14129625"]["Handle"],"Transparency","0")
+	D:FireEvent("PompousTheCloud",MainUserW["14129625"]["Handle"]["Mesh"],"Offset",Vector3.new(0.0,10.0,0)) --where you want ot
+	D:FireEvent("PompousTheCloud",MainUserW["14129625"],"Name","cube")
+	wait(1)
+spawn(function()
+game:service'RunService'.RenderStepped:connect(function()
+local val = math.floor(MainUserW["SuperFlyGoldBoombox"]["Handle"]["BoomboxSound"].PlaybackLoudness)/vol
+D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"]["Mesh"],"Scale",Vector3.new(val ,val ,val))
+D:FireEvent("PompousTheCloud", MainUserW["SuperFlyGoldBoombox"]["Handle"], "Transparency", "1")
+D:FireEvent("PompousTheCloud", MainUserW["PompousTheCloud"]["Handle"], "Transparency", "1")
+end)
+end)
+	while true do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	for i = 0,255,10 do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	end
+	for i = 255,0,-10 do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	end
+	for i = 0,255,10 do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	end
+	for i = 255,0,-10 do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	end
+	for i = 0,255,10 do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	end
+	for i = 255,0,-10 do
+		D:FireEvent("PompousTheCloud",MainUserW["cube"]["Handle"],"Color",Color3.new(0,0,0))
+	end
+local ME = game:GetService("Players").LocalPlayer
+function FireEvent(ItemName, Object, Property, Value)
+  ME.Character:FindFirstChild(ItemName)["ServerControl"]:InvokeServer("SetProperty",{["Value"]=Value,["Property"]=Property,["Object"]=Object})
+end
+end
